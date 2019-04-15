@@ -1,0 +1,10 @@
+spring:
+    quartz:
+        job-store-type: memory
+        properties:
+            org.quartz.scheduler.instanceName: QuartzExample
+            org.quartz.threadPool.threadCount: 1
+server:
+    port: 8080
+    servlet:
+        context-path: /

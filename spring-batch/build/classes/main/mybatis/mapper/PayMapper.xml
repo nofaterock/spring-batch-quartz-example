@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nofaterock.batch.pay.repository.PayMapper">
+
+	<select id="selectAll" resultType="com.nofaterock.batch.pay.domain.Pay">
+		SELECT id, amount, tx_name, tx_date_time
+		FROM Pay
+		WHERE amount >= #{amount}
+		ORDER BY id ASC
+	</select>
+
+	<select id="selectPaged" resultType="com.nofaterock.batch.pay.domain.Pay">
+		SELECT id, amount, tx_name, tx_date_time
+		FROM Pay
+		WHERE amount >= #{amount}
+		ORDER BY id ASC
+			OFFSET #{_skiprows} ROWS
+			FETCH NEXT #{_pagesize} ROWS ONLY
+	</select>
+
+	<insert id="insertPay2" parameterType="com.nofaterock.batch.pay.domain.Pay2">
+		INSERT INTO Pay2 (amount, tx_name, tx_date_time)
+		VALUES (#{amount}, #{txName}, #{txDateTime})
+	</insert>
+
+</mapper>
