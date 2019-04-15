@@ -1,0 +1,22 @@
+spring:
+    datasource:
+        batch:
+            driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-meta;
+            username: <username>
+            password: <password>
+        pay:
+            driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=test-pay;
+            username: <username>
+            password: <password>
+    batch:
+        job:
+            enabled: false
+server:
+    port: 8080
+    servlet:
+        context-path: /
+logging:
+    level:
+        org.springframework.batch: INFO

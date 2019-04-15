@@ -1,0 +1,7 @@
+spring:
+    quartz:
+        job-store-type: memory
+server:
+    port: 8080
+    servlet:
+        context-path: /

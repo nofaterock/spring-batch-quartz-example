@@ -1,0 +1,10 @@
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+	}
+}
+rootProject.name = 'spring-batch-quartz'
+
+include 'quartz',
+		'spring-batch',
+		'spring-batch-with-quartz'
