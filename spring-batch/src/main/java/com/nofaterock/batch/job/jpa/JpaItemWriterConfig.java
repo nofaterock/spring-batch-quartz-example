@@ -1,7 +1,7 @@
 package com.nofaterock.batch.job.jpa;
 
-import com.nofaterock.batch.pay.domain.Pay;
-import com.nofaterock.batch.pay.domain.Pay2;
+import com.nofaterock.batch.pay.Pay;
+import com.nofaterock.batch.pay.Pay2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -38,25 +38,25 @@ public class JpaItemWriterConfig {
 	@Bean
 	public Job jpaItemWriterJob() throws Exception {
 		return jobBuilderFactory.get("jpaItemWriterJob")
-			.start(jpaItemWriterStep())
+			.start(jpaItemWriterJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step jpaItemWriterStep() throws Exception {
-		return stepBuilderFactory.get("jpaItemWriterStep")
+	public Step jpaItemWriterJobStep() throws Exception {
+		return stepBuilderFactory.get("jpaItemWriterJobStep")
 			.<Pay, Pay2>chunk(CHUNK_SIZE)
-			.reader(jpaItemWriterReader(null))
-			.processor(jpaItemWriterProcessor())
-			.writer(jpaItemWriter())
+			.reader(jpaItemWriterJobReader(null))
+			.processor(jpaItemWriterJobProcessor())
+			.writer(jpaItemWriterJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public JpaPagingItemReader<Pay> jpaItemWriterReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public JpaPagingItemReader<Pay> jpaItemWriterJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new JpaPagingItemReaderBuilder<Pay>()
-			.name("jpaItemWriterReader")
+			.name("jpaItemWriterJobReader")
 			.entityManagerFactory(entityManagerFactory)
 			.pageSize(CHUNK_SIZE)
 			.queryString("SELECT p FROM Pay p WHERE p.amount >= :amount")
@@ -69,12 +69,12 @@ public class JpaItemWriterConfig {
 	}
 
 	@Bean
-	public ItemProcessor<Pay, Pay2> jpaItemWriterProcessor() {
+	public ItemProcessor<Pay, Pay2> jpaItemWriterJobProcessor() {
 		return pay -> new Pay2(pay.getAmount(), pay.getTxName(), pay.getTxDateTime());
 	}
 
 	@Bean
-	public JpaItemWriter<Pay2> jpaItemWriter() throws Exception {
+	public JpaItemWriter<Pay2> jpaItemWriterJobWriter() throws Exception {
 		JpaItemWriter<Pay2> jpaItemWriter = new JpaItemWriter<>();
 
 		jpaItemWriter.setEntityManagerFactory(entityManagerFactory);

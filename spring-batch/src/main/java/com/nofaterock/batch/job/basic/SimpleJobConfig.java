@@ -25,15 +25,15 @@ public class SimpleJobConfig {
 	@Bean
 	public Job simpleJob() {
 		return jobBuilderFactory.get("simpleJob")
-			.start(simpleStep1())
+			.start(simpleJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step simpleStep1() {
-		return stepBuilderFactory.get("simpleStep1")
+	public Step simpleJobStep() {
+		return stepBuilderFactory.get("simpleJobStep")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is Step1");
+				log.info(">>>>> This is simpleJobStep");
 				return RepeatStatus.FINISHED;
 			})
 			.build();

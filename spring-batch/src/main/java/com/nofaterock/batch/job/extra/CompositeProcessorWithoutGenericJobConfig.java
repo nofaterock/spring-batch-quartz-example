@@ -1,6 +1,6 @@
 package com.nofaterock.batch.job.extra;
 
-import com.nofaterock.batch.pay.domain.Pay;
+import com.nofaterock.batch.pay.Pay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -41,26 +41,26 @@ public class CompositeProcessorWithoutGenericJobConfig {
 	public Job compositeProcessorWithoutGenericJob() {
 		return jobBuilderFactory.get("compositeProcessorWithoutGenericJob")
 			.preventRestart()
-			.start(compositeProcessorWithoutGenericStep())
+			.start(compositeProcessorWithoutGenericJobStep())
 			.build();
 	}
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public Step compositeProcessorWithoutGenericStep() {
-		return stepBuilderFactory.get("compositeProcessorWithoutGenericStep")
+	public Step compositeProcessorWithoutGenericJobStep() {
+		return stepBuilderFactory.get("compositeProcessorWithoutGenericJobStep")
 			.<Pay, String>chunk(CHUNK_SIZE)
-			.reader(compositeProcessorWithoutGenericReader(null))
-			.processor(compositeProcessorWithoutGenericProcessor())
-			.writer(compositeProcessorWithoutGenericWriter())
+			.reader(compositeProcessorWithoutGenericJobReader(null))
+			.processor(compositeProcessorWithoutGenericJobProcessor())
+			.writer(compositeProcessorWithoutGenericJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public JpaPagingItemReader<Pay> compositeProcessorWithoutGenericReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public JpaPagingItemReader<Pay> compositeProcessorWithoutGenericJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new JpaPagingItemReaderBuilder<Pay>()
-			.name("compositeProcessorWithoutGenericReader")
+			.name("compositeProcessorWithoutGenericJobReader")
 			.entityManagerFactory(entityManagerFactory)
 			.pageSize(CHUNK_SIZE)
 			.queryString("SELECT p FROM Pay p WHERE p.amount >= :amount")
@@ -74,7 +74,7 @@ public class CompositeProcessorWithoutGenericJobConfig {
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public CompositeItemProcessor compositeProcessorWithoutGenericProcessor() {
+	public CompositeItemProcessor compositeProcessorWithoutGenericJobProcessor() {
 		List<ItemProcessor> delegates = new ArrayList<>(2);
 		delegates.add(processor1());
 		delegates.add(processor2());
@@ -90,14 +90,14 @@ public class CompositeProcessorWithoutGenericJobConfig {
 	}
 
 	private ItemProcessor<String, String> processor2() {
-		return txName -> "<<<<< " + txName + " >>>>>";
+		return txName -> "<" + txName + ">";
 	}
 
 	@Bean
-	public ItemWriter<String> compositeProcessorWithoutGenericWriter() {
-		return items -> {
-			for (String item : items) {
-				log.info("Custom - {}", item);
+	public ItemWriter<String> compositeProcessorWithoutGenericJobWriter() {
+		return pays -> {
+			for (String pay : pays) {
+				log.info(">>>>> pay = {}", pay);
 			}
 		};
 	}

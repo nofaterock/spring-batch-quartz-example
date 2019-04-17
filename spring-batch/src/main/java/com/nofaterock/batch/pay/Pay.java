@@ -1,4 +1,4 @@
-package com.nofaterock.batch.pay.domain;
+package com.nofaterock.batch.pay;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +24,6 @@ import java.time.format.DateTimeFormatter;
 @Entity
 public class Pay {
 
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -39,13 +37,8 @@ public class Pay {
 	public Pay(Long amount, String txName, String txDateTime) {
 		this.amount = amount;
 		this.txName = txName;
-		this.txDateTime = LocalDateTime.parse(txDateTime, FORMATTER);
+		this.txDateTime = LocalDateTime.parse(txDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
 		this.name = "Pay";
-	}
-
-	public Pay(Long id, Long amount, String txName, String txDateTime) {
-		this(amount, txName, txDateTime);
-		this.id = id;
 	}
 
 }

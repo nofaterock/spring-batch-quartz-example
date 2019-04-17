@@ -1,5 +1,6 @@
-package com.nofaterock.batchwithquartz.pay;
+package com.nofaterock.batchwithquartz.job;
 
+import com.nofaterock.batchwithquartz.pay.Pay;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -90,7 +91,7 @@ public class PayJobConfig {
 	public PagingQueryProvider createQueryProvider() throws Exception {
 		SqlPagingQueryProviderFactoryBean queryProvider = new SqlPagingQueryProviderFactoryBean();
 		queryProvider.setDataSource(payDataSource);
-		queryProvider.setSelectClause("id, amount, tx_name, tx_date_time");
+		queryProvider.setSelectClause("id, amount, txName, txDateTime");
 		queryProvider.setFromClause("from Pay");
 		queryProvider.setWhereClause("where amount >= :amount");
 		queryProvider.setSortKeys(new HashMap<String, Order>(1) {

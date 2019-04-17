@@ -1,6 +1,6 @@
 package com.nofaterock.batch.job.jpa;
 
-import com.nofaterock.batch.pay.domain.Pay;
+import com.nofaterock.batch.pay.Pay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -36,24 +36,24 @@ public class jpaPagingItemReaderJobConfig {
 	@Bean
 	public Job jpaPagingItemReaderJob() throws Exception {
 		return jobBuilderFactory.get("jpaPagingItemReaderJob")
-			.start(jpaPagingItemReaderStep())
+			.start(jpaPagingItemReaderJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step jpaPagingItemReaderStep() throws Exception {
-		return stepBuilderFactory.get("jpaPagingItemReaderStep")
+	public Step jpaPagingItemReaderJobStep() throws Exception {
+		return stepBuilderFactory.get("jpaPagingItemReaderJobStep")
 			.<Pay, Pay>chunk(CHUNK_SIZE)
-			.reader(jpaPagingItemReader(null))
-			.writer(jpaPagingItemWriter())
+			.reader(jpaPagingItemReaderJobReader(null))
+			.writer(jpaPagingItemReaderJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public JpaPagingItemReader<Pay> jpaPagingItemReader(@Value("#{jobParameters[amount]}") Long amount) throws Exception {
+	public JpaPagingItemReader<Pay> jpaPagingItemReaderJobReader(@Value("#{jobParameters[amount]}") Long amount) throws Exception {
 		return new JpaPagingItemReaderBuilder<Pay>()
-			.name("jpaPagingItemReader")
+			.name("jpaPagingItemReaderJobReader")
 			.entityManagerFactory(entityManagerFactory)
 			.pageSize(CHUNK_SIZE)
 			.queryString("SELECT p FROM Pay p WHERE amount >= :amount")
@@ -66,10 +66,10 @@ public class jpaPagingItemReaderJobConfig {
 	}
 
 	@Bean
-	public ItemWriter<Pay> jpaPagingItemWriter() {
-		return list -> {
-			for (Pay pay : list) {
-				log.info("Current Pay={}", pay);
+	public ItemWriter<Pay> jpaPagingItemReaderJobWriter() {
+		return pays -> {
+			for (Pay pay : pays) {
+				log.info(">>>>> Pay = {}", pay);
 			}
 		};
 	}

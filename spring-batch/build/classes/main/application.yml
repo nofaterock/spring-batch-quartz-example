@@ -1,12 +1,20 @@
 spring:
     datasource:
-        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-        url: jdbc:sqlserver://localhost;databaseName=batch-meta;
-        username: sa
-        password: SE@knet8385
+        batch:
+            driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-meta;
+            username: sa
+            password: SE@knet8385
+        pay:
+            driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-test;
+            username: sa
+            password: SE@knet8385
     batch:
         job:
             names: ${job.name:NONE}
+mybatis:
+    mapper-locations: classpath*:mybatis/mapper/*Mapper.xml
 server:
     port: 8080
     servlet:
@@ -17,5 +25,3 @@ logging:
         org.hibernate.SQL: DEBUG
         org.hibernate.type: TRACE
         org.hibernate.type.BasicTypeRegistry: WARN
-mybatis:
-    mapper-locations: classpath*:mybatis/mapper/*Mapper.xml

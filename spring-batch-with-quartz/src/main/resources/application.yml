@@ -7,7 +7,7 @@ spring:
             password: <password>
         pay:
             driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-            jdbc-url: jdbc:sqlserver://localhost;databaseName=test-pay;
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-test;
             username: <username>
             password: <password>
     batch:

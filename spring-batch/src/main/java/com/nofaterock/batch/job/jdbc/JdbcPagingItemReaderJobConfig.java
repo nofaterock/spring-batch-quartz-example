@@ -1,6 +1,6 @@
 package com.nofaterock.batch.job.jdbc;
 
-import com.nofaterock.batch.pay.domain.Pay;
+import com.nofaterock.batch.pay.Pay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -40,22 +40,22 @@ public class JdbcPagingItemReaderJobConfig {
 	@Bean
 	public Job jdbcPagingItemReaderJob() throws Exception {
 		return jobBuilderFactory.get("jdbcPagingItemReaderJob")
-			.start(jdbcPagingItemReaderStep())
+			.start(jdbcPagingItemReaderJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step jdbcPagingItemReaderStep() throws Exception {
-		return stepBuilderFactory.get("jdbcPagingItemReaderStep")
+	public Step jdbcPagingItemReaderJobStep() throws Exception {
+		return stepBuilderFactory.get("jdbcPagingItemReaderJobStep")
 			.<Pay, Pay>chunk(CHUNK_SIZE)
-			.reader(jdbcPagingItemReader(null))
-			.writer(jdbcPagingItemWriter())
+			.reader(jdbcPagingItemReaderJobReader(null))
+			.writer(jdbcPagingItemReaderJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public JdbcPagingItemReader<Pay> jdbcPagingItemReader(@Value("#{jobParameters[amount]}") Long amount) throws Exception {
+	public JdbcPagingItemReader<Pay> jdbcPagingItemReaderJobReader(@Value("#{jobParameters[amount]}") Long amount) throws Exception {
 		return new JdbcPagingItemReaderBuilder<Pay>()
 			.fetchSize(CHUNK_SIZE)
 			.dataSource(dataSource)
@@ -66,7 +66,7 @@ public class JdbcPagingItemReaderJobConfig {
 					put("amount", amount);
 				}
 			})
-			.name("jdbcPagingItemReader")
+			.name("jdbcPagingItemReaderJobReader")
 			.build();
 	}
 
@@ -74,7 +74,7 @@ public class JdbcPagingItemReaderJobConfig {
 	public PagingQueryProvider createQueryProvider() throws Exception {
 		SqlPagingQueryProviderFactoryBean queryProvider = new SqlPagingQueryProviderFactoryBean();
 		queryProvider.setDataSource(dataSource);
-		queryProvider.setSelectClause("id, amount, tx_name, tx_date_time");
+		queryProvider.setSelectClause("id, amount, txName, txDateTime");
 		queryProvider.setFromClause("from Pay");
 		queryProvider.setWhereClause("where amount >= :amount");
 		queryProvider.setSortKeys(new HashMap<String, Order>(1) {
@@ -87,10 +87,10 @@ public class JdbcPagingItemReaderJobConfig {
 	}
 
 	@Bean
-	public ItemWriter<Pay> jdbcPagingItemWriter() {
-		return list -> {
-			for (Pay pay : list) {
-				log.info("Current Pay={}", pay);
+	public ItemWriter<Pay> jdbcPagingItemReaderJobWriter() {
+		return pays -> {
+			for (Pay pay : pays) {
+				log.info(">>>>> Pay = {}", pay);
 			}
 		};
 	}

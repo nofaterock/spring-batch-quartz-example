@@ -1,6 +1,8 @@
-package com.nofaterock.batch.pay.repository;
+package com.nofaterock.batch.pay;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @author nofaterock
@@ -9,6 +11,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface PayMapper {
 
+	List<Pay> selectAll(long amount);
 
+	void insertPay2(Pay2 pay2);
 
 }

@@ -29,8 +29,8 @@ public class ScopeJobConfig {
 	@Bean
 	public Job scopeJob() {
 		return jobBuilderFactory.get("scopeJob")
-			.start(scopeStep1(null))
-			.next(scopeStep2())
+			.start(scopeJobStep1(null))
+			.next(scopeJobStep2())
 			.build();
 	}
 
@@ -41,20 +41,20 @@ public class ScopeJobConfig {
 	 */
 	@Bean
 	@JobScope
-	public Step scopeStep1(@Value("#{jobParameters[amount]}") Long amount) {
-		return stepBuilderFactory.get("scopeStep1")
+	public Step scopeJobStep1(@Value("#{jobParameters[requestDate]}") String requestDate) {
+		return stepBuilderFactory.get("scopeJobStep1")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is ScopeStep1 (@JobScope)");
-				log.info(">>>>> amount = {}", amount);
+				log.info(">>>>> This is scopeJobStep1 (@JobScope)");
+				log.info(">>>>> requestDate = {}", requestDate);
 				return RepeatStatus.FINISHED;
 			})
 			.build();
 	}
 
 	@Bean
-	public Step scopeStep2() {
-		return stepBuilderFactory.get("scopeStep2")
-			.tasklet(scopeStep2Tasklet(null))
+	public Step scopeJobStep2() {
+		return stepBuilderFactory.get("scopeJobStep2")
+			.tasklet(scopeJobStep2Tasklet(null))
 			.build();
 	}
 
@@ -65,9 +65,9 @@ public class ScopeJobConfig {
 	 */
 	@Bean
 	@StepScope
-	public Tasklet scopeStep2Tasklet(@Value("#{jobParameters[requestDate]}") String requestDate) {
+	public Tasklet scopeJobStep2Tasklet(@Value("#{jobParameters[requestDate]}") String requestDate) {
 		return (contribution, chunkContext) -> {
-			log.info(">>>>> This is ScopeStep2 (@StepScope)");
+			log.info(">>>>> This is scopeJobStep2 (@StepScope)");
 			log.info(">>>>> requestDate = {}", requestDate);
 			return RepeatStatus.FINISHED;
 		};

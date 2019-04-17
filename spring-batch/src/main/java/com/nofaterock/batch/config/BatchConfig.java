@@ -1,4 +1,4 @@
-package com.nofaterock.batchwithquartz.batch;
+package com.nofaterock.batch.config;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,6 +1,6 @@
 package com.nofaterock.batch.job.jdbc;
 
-import com.nofaterock.batch.pay.domain.Pay;
+import com.nofaterock.batch.pay.Pay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -36,37 +36,37 @@ public class JdbcCursorItemReaderJobConfig {
 	@Bean
 	public Job jdbcCursorItemReaderJob() {
 		return jobBuilderFactory.get("jdbcCursorItemReaderJob")
-			.start(jdbcCursorItemReaderStep())
+			.start(jdbcCursorItemReaderJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step jdbcCursorItemReaderStep() {
-		return stepBuilderFactory.get("jdbcCursorItemReaderStep")
+	public Step jdbcCursorItemReaderJobStep() {
+		return stepBuilderFactory.get("jdbcCursorItemReaderJobStep")
 			.<Pay, Pay>chunk(CHUNK_SIZE)
-			.reader(jdbcCursorItemReader(null))
-			.writer(jdbcCursorItemWriter())
+			.reader(jdbcCursorItemReaderJobReader(null))
+			.writer(jdbcCursorItemReaderJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public JdbcCursorItemReader<Pay> jdbcCursorItemReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public JdbcCursorItemReader<Pay> jdbcCursorItemReaderJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new JdbcCursorItemReaderBuilder<Pay>()
 			.fetchSize(CHUNK_SIZE)
 			.dataSource(dataSource)
 			.rowMapper(new BeanPropertyRowMapper<>(Pay.class))
-			.sql("SELECT id, amount, tx_name, tx_date_time FROM Pay WHERE amount >= ?")
+			.sql("SELECT id, amount, txName, txDateTime FROM Pay WHERE amount >= ?")
 			.queryArguments(new Object[]{amount})
-			.name("jdbcCursorItemReader")
+			.name("jdbcCursorItemReaderJobReader")
 			.build();
 	}
 
 	@Bean
-	public ItemWriter<Pay> jdbcCursorItemWriter() {
-		return list -> {
-			for (Pay pay : list) {
-				log.info("Current Pay={}", pay);
+	public ItemWriter<Pay> jdbcCursorItemReaderJobWriter() {
+		return pays -> {
+			for (Pay pay : pays) {
+				log.info(">>>>> Pay = {}", pay);
 			}
 		};
 	}

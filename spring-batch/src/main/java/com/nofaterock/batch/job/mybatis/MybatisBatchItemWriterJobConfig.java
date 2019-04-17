@@ -1,7 +1,7 @@
 package com.nofaterock.batch.job.mybatis;
 
-import com.nofaterock.batch.pay.domain.Pay;
-import com.nofaterock.batch.pay.domain.Pay2;
+import com.nofaterock.batch.pay.Pay;
+import com.nofaterock.batch.pay.Pay2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -39,23 +39,23 @@ public class MybatisBatchItemWriterJobConfig {
 	@Bean
 	public Job mybatisBatchItemWriterJob() {
 		return jobBuilderFactory.get("mybatisBatchItemWriterJob")
-			.start(mybatisBatchItemWriterStep())
+			.start(mybatisBatchItemWriterJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step mybatisBatchItemWriterStep() {
-		return stepBuilderFactory.get("mybatisBatchItemWriterStep")
+	public Step mybatisBatchItemWriterJobStep() {
+		return stepBuilderFactory.get("mybatisBatchItemWriterJobStep")
 			.<Pay, Pay2>chunk(CHUNK_SIZE)
-			.reader(mybatisBatchItemWriterReader(null))
-			.processor(mybatisBatchItemWriterProcessor())
-			.writer(mybatisBatchItemWriterWriter())
+			.reader(mybatisBatchItemWriterJobReader(null))
+			.processor(mybatisBatchItemWriterJobProcessor())
+			.writer(mybatisBatchItemWriterJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public MyBatisPagingItemReader<Pay> mybatisBatchItemWriterReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public MyBatisPagingItemReader<Pay> mybatisBatchItemWriterJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new MyBatisPagingItemReaderBuilder<Pay>()
 			.sqlSessionFactory(sqlSessionFactory)
 			.queryId("com.nofaterock.batch.item.repository.PayMapper.selectPaged")
@@ -69,12 +69,12 @@ public class MybatisBatchItemWriterJobConfig {
 	}
 
 	@Bean
-	public ItemProcessor<Pay, Pay2> mybatisBatchItemWriterProcessor() {
+	public ItemProcessor<Pay, Pay2> mybatisBatchItemWriterJobProcessor() {
 		return pay -> new Pay2(pay.getAmount(), pay.getTxName(), pay.getTxDateTime());
 	}
 
 	@Bean
-	public MyBatisBatchItemWriter<Pay2> mybatisBatchItemWriterWriter() {
+	public MyBatisBatchItemWriter<Pay2> mybatisBatchItemWriterJobWriter() {
 		MyBatisBatchItemWriter<Pay2> itemWriter = new MyBatisBatchItemWriterBuilder<Pay2>()
 			.sqlSessionFactory(sqlSessionFactory)
 			.statementId("com.nofaterock.batch.item.repository.PayMapper.insertPay2")

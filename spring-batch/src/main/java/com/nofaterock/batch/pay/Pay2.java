@@ -1,4 +1,4 @@
-package com.nofaterock.batch.pay.domain;
+package com.nofaterock.batch.pay;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

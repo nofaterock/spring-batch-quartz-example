@@ -17,45 +17,45 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class StepNextJobConfig {
+public class FlowJobConfig {
 
 	private final JobBuilderFactory jobBuilderFactory;
 	private final StepBuilderFactory stepBuilderFactory;
 
 	@Bean
-	public Job stepNextJob() {
-		return jobBuilderFactory.get("stepNextJob")
-			.start(step1())
-			.next(step2())
-			.next(step3())
+	public Job flowJob() {
+		return jobBuilderFactory.get("flowJob")
+			.start(flowJobStep1())
+			.next(flowJobStep2())
+			.next(flowJobStep3())
 			.build();
 	}
 
 	@Bean
-	public Step step1() {
-		return stepBuilderFactory.get("conditionalStep1")
+	public Step flowJobStep1() {
+		return stepBuilderFactory.get("flowJobStep1")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is Step1");
+				log.info(">>>>> This is flowJobStep1");
 				return RepeatStatus.FINISHED;
 			})
 			.build();
 	}
 
 	@Bean
-	public Step step2() {
-		return stepBuilderFactory.get("conditionalStep2")
+	public Step flowJobStep2() {
+		return stepBuilderFactory.get("flowJobStep2")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is Step2");
+				log.info(">>>>> This is flowJobStep2");
 				return RepeatStatus.FINISHED;
 			})
 			.build();
 	}
 
 	@Bean
-	public Step step3() {
-		return stepBuilderFactory.get("conditionalStep3")
+	public Step flowJobStep3() {
+		return stepBuilderFactory.get("florJobStep3")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is Step3");
+				log.info(">>>>> This is florJobStep3");
 				return RepeatStatus.FINISHED;
 			})
 			.build();

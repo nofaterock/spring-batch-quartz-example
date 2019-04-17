@@ -1,7 +1,7 @@
 package com.nofaterock.batch.job.mybatis;
 
-import com.nofaterock.batch.pay.domain.Pay;
-import com.nofaterock.batch.pay.domain.Pay2;
+import com.nofaterock.batch.pay.Pay;
+import com.nofaterock.batch.pay.Pay2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -38,23 +38,23 @@ public class MybatisPagingItemReaderJobConfig {
 	@Bean
 	public Job mybatisPagingItemReaderJob() {
 		return jobBuilderFactory.get("mybatisPagingItemReaderJob")
-			.start(mybatisPagingItemReaderStep())
+			.start(mybatisPagingItemReaderJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step mybatisPagingItemReaderStep() {
-		return stepBuilderFactory.get("mybatisPagingItemReaderStep")
+	public Step mybatisPagingItemReaderJobStep() {
+		return stepBuilderFactory.get("mybatisPagingItemReaderJobStep")
 			.<Pay, Pay2>chunk(CHUNK_SIZE)
-			.reader(mybatisPagingItemReaderReader(null))
-			.processor(mybatisPagingItemReaderProcessor())
-			.writer(mybatisPagingItemReaderWriter())
+			.reader(mybatisPagingItemReaderJobReader(null))
+			.processor(mybatisPagingItemReaderJobProcessor())
+			.writer(mybatisPagingItemReaderJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public MyBatisPagingItemReader<Pay> mybatisPagingItemReaderReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public MyBatisPagingItemReader<Pay> mybatisPagingItemReaderJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new MyBatisPagingItemReaderBuilder<Pay>()
 			.sqlSessionFactory(sqlSessionFactory)
 			.queryId("com.nofaterock.batch.item.repository.PayMapper.selectPaged")
@@ -68,15 +68,15 @@ public class MybatisPagingItemReaderJobConfig {
 	}
 
 	@Bean
-	public ItemProcessor<Pay, Pay2> mybatisPagingItemReaderProcessor() {
+	public ItemProcessor<Pay, Pay2> mybatisPagingItemReaderJobProcessor() {
 		return pay -> new Pay2(pay.getAmount(), pay.getTxName(), pay.getTxDateTime());
 	}
 
 	@Bean
-	public ItemWriter<Pay2> mybatisPagingItemReaderWriter() {
-		return items -> {
-			for (Pay2 item : items) {
-				log.info("Custom - {}", item);
+	public ItemWriter<Pay2> mybatisPagingItemReaderJobWriter() {
+		return pay2s -> {
+			for (Pay2 pay2 : pay2s) {
+				log.info(">>>>> Pay2 = {}", pay2);
 			}
 		};
 	}

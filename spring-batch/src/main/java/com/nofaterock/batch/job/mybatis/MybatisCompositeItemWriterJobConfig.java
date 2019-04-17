@@ -1,7 +1,7 @@
 package com.nofaterock.batch.job.mybatis;
 
-import com.nofaterock.batch.pay.domain.Pay;
-import com.nofaterock.batch.pay.domain.Pay2;
+import com.nofaterock.batch.pay.Pay;
+import com.nofaterock.batch.pay.Pay2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -43,24 +43,24 @@ public class MybatisCompositeItemWriterJobConfig {
 	@Bean
 	public Job mybatisCompositeItemWriterJob() {
 		return jobBuilderFactory.get("mybatisCompositeItemWriterJob")
-			.start(mybatisCompositeItemWriterStep())
+			.start(mybatisCompositeItemWriterJobStep())
 			.build();
 	}
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public Step mybatisCompositeItemWriterStep() {
-		return stepBuilderFactory.get("mybatisCompositeItemWriterStep")
+	public Step mybatisCompositeItemWriterJobStep() {
+		return stepBuilderFactory.get("mybatisCompositeItemWriterJobStep")
 			.<Pay, Pay2>chunk(CHUNK_SIZE)
-			.reader(mybatisCompositeItemWriterReader(null))
-			.processor(mybatisCompositeItemWriterProcessor())
-			.writer(mybatisCompositeItemWriterWriter())
+			.reader(mybatisCompositeItemWriterJobReader(null))
+			.processor(mybatisCompositeItemWriterJobProcessor())
+			.writer(mybatisCompositeItemWriterJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public MyBatisPagingItemReader<Pay> mybatisCompositeItemWriterReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public MyBatisPagingItemReader<Pay> mybatisCompositeItemWriterJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new MyBatisPagingItemReaderBuilder<Pay>()
 			.sqlSessionFactory(sqlSessionFactory)
 			.queryId("com.nofaterock.batch.item.repository.PayMapper.selectPaged")
@@ -74,23 +74,23 @@ public class MybatisCompositeItemWriterJobConfig {
 	}
 
 	@Bean
-	public ItemProcessor<Pay, Pay2> mybatisCompositeItemWriterProcessor() {
+	public ItemProcessor<Pay, Pay2> mybatisCompositeItemWriterJobProcessor() {
 		return pay -> new Pay2(pay.getAmount(), pay.getTxName(), pay.getTxDateTime());
 	}
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public CompositeItemWriter mybatisCompositeItemWriterWriter() {
+	public CompositeItemWriter mybatisCompositeItemWriterJobWriter() {
 		CompositeItemWriter compositeItemWriter = new CompositeItemWriter();
 		List<ItemWriter<Pay2>> writers = new ArrayList<>(2);
-		writers.add(payItemWriter());
-		writers.add(pay2ItemWriter());
+		writers.add(itemWriter1());
+		writers.add(itemWriter2());
 
 		compositeItemWriter.setDelegates(writers);
 		return compositeItemWriter;
 	}
 
-	private ItemWriter<Pay2> payItemWriter() {
+	private ItemWriter<Pay2> itemWriter1() {
 		MyBatisBatchItemWriter<Pay2> itemWriter = new MyBatisBatchItemWriterBuilder<Pay2>()
 			.sqlSessionFactory(sqlSessionFactory)
 			.statementId("com.nofaterock.batch.item.repository.PayMapper.insertPay2")
@@ -101,7 +101,7 @@ public class MybatisCompositeItemWriterJobConfig {
 		return itemWriter;
 	}
 
-	private ItemWriter<Pay2> pay2ItemWriter() {
+	private ItemWriter<Pay2> itemWriter2() {
 		MyBatisBatchItemWriter<Pay2> itemWriter = new MyBatisBatchItemWriterBuilder<Pay2>()
 			.sqlSessionFactory(sqlSessionFactory)
 			.statementId("com.nofaterock.batch.item.repository.PayMapper.insertPay2")

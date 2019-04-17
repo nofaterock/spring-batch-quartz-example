@@ -1,9 +1,15 @@
 spring:
     datasource:
-        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-        url: jdbc:sqlserver://localhost;databaseName=batch-meta;
-        username: <username>
-        password: <password>
+        batch:
+            driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-meta;
+            username: <username>
+            password: <password>
+        pay:
+            driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-test;
+            username: <username>
+            password: <password>
     batch:
         job:
             names: ${job.name:NONE}

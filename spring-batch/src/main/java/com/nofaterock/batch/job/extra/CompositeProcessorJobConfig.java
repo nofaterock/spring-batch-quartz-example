@@ -1,6 +1,6 @@
 package com.nofaterock.batch.job.extra;
 
-import com.nofaterock.batch.pay.domain.Pay;
+import com.nofaterock.batch.pay.Pay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -41,25 +41,25 @@ public class CompositeProcessorJobConfig {
 	public Job compositeProcessorJob() {
 		return jobBuilderFactory.get("compositeProcessorJob")
 			.preventRestart()
-			.start(compositeProcessorStep())
+			.start(compositeProcessorJobStep())
 			.build();
 	}
 
 	@Bean
-	public Step compositeProcessorStep() {
-		return stepBuilderFactory.get("compositeProcessorStep")
+	public Step compositeProcessorJobStep() {
+		return stepBuilderFactory.get("compositeProcessorJobStep")
 			.<Pay, Pay>chunk(CHUNK_SIZE)
-			.reader(compositeProcessorReader(null))
-			.processor(compositeProcessorProcessor())
-			.writer(compositeProcessorWriter())
+			.reader(compositeProcessorJobReader(null))
+			.processor(compositeProcessorJobProcessor())
+			.writer(compositeProcessorJobWriter())
 			.build();
 	}
 
 	@Bean
 	@StepScope
-	public JpaPagingItemReader<Pay> compositeProcessorReader(@Value("#{jobParameters[amount]}") Long amount) {
+	public JpaPagingItemReader<Pay> compositeProcessorJobReader(@Value("#{jobParameters[amount]}") Long amount) {
 		return new JpaPagingItemReaderBuilder<Pay>()
-			.name("compositeProcessorReader")
+			.name("compositeProcessorJobReader")
 			.entityManagerFactory(entityManagerFactory)
 			.pageSize(CHUNK_SIZE)
 			.queryString("SELECT p FROM Pay p WHERE p.amount >= :amount")
@@ -72,7 +72,7 @@ public class CompositeProcessorJobConfig {
 	}
 
 	@Bean
-	public CompositeItemProcessor<Pay, Pay> compositeProcessorProcessor() {
+	public CompositeItemProcessor<Pay, Pay> compositeProcessorJobProcessor() {
 		List<ItemProcessor<Pay, Pay>> delegates = new ArrayList<>(2);
 		delegates.add(processor1());
 		delegates.add(processor2());
@@ -85,23 +85,23 @@ public class CompositeProcessorJobConfig {
 
 	private ItemProcessor<Pay, Pay> processor1() {
 		return pay -> {
-			pay.setName("<<<<< " + pay.getName());
+			pay.setName("<" + pay.getName());
 			return pay;
 		};
 	}
 
 	private ItemProcessor<Pay, Pay> processor2() {
 		return pay -> {
-			pay.setName(pay.getName() + " >>>>>");
+			pay.setName(pay.getName() + ">");
 			return pay;
 		};
 	}
 
 	@Bean
-	public ItemWriter<Pay> compositeProcessorWriter() {
-		return items -> {
-			for (Pay item : items) {
-				log.info("Custom - {}", item);
+	public ItemWriter<Pay> compositeProcessorJobWriter() {
+		return pays -> {
+			for (Pay pay : pays) {
+				log.info(">>>>> Pay = {}", pay);
 			}
 		};
 	}

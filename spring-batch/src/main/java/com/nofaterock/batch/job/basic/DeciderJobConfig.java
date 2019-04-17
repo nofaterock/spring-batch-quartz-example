@@ -31,43 +31,43 @@ public class DeciderJobConfig {
 	@Bean
 	public Job deciderJob() {
 		return jobBuilderFactory.get("deciderJob")
-			.start(startStep()) // startStep 시작
+			.start(deciderJobStep()) // deciderJobStep 시작
 			.next(decider()) // decider 실행 (홀수, 짝수 구분)
 			.from(decider()) // decider 부터
 				.on("ODD") // decider 의 FlowExecutionStatus 가 ODD 인 경우
-				.to(oddStep()) // oddStep 으로
+				.to(deciderOddStep()) // deciderOddStep 으로
 			.from(decider())
 				.on("EVEN") // decider 의 FlowExecutionStatus 가 EVEN 인 경우
-				.to(evenStep()) // evenStep 으로
+				.to(deciderEvenStep()) // deciderEvenStep 으로
 			.end() // 작업종료
 			.build();
 	}
 
 	@Bean
-	public Step startStep() {
-		return stepBuilderFactory.get("startStep")
+	public Step deciderJobStep() {
+		return stepBuilderFactory.get("deciderJobStep")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is StartStep");
+				log.info(">>>>> This is deciderJobStep");
 				return RepeatStatus.FINISHED;
 			})
 			.build();
 	}
 
 	@Bean
-	public Step evenStep() {
-		return stepBuilderFactory.get("evenStep")
+	public Step deciderEvenStep() {
+		return stepBuilderFactory.get("deciderEvenStep")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is EvenStep");
+				log.info(">>>>> This is deciderEvenStep");
 				return RepeatStatus.FINISHED;
 			})
 			.build();
 	}
 
 	@Bean
-	public Step oddStep() {
-		return stepBuilderFactory.get("oddStep")
+	public Step deciderOddStep() {
+		return stepBuilderFactory.get("deciderOddStep")
 			.tasklet((contribution, chunkContext) -> {
-				log.info(">>>>> This is OddStep");
+				log.info(">>>>> This is deciderOddStep");
 				return RepeatStatus.FINISHED;
 			})
 			.build();

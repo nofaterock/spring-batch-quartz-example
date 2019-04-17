@@ -1,6 +1,6 @@
 package com.nofaterock.batchwithquartz.quartz;
 
-import com.nofaterock.batchwithquartz.pay.PayJobConfig;
+import com.nofaterock.batchwithquartz.job.PayJobConfig;
 import lombok.RequiredArgsConstructor;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
