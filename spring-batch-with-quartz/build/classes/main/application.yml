@@ -3,13 +3,13 @@ spring:
         batch:
             driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
             jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-meta;
-            username: <username>
-            password: <password>
+            username: sa
+            password: SE@knet8385
         pay:
             driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
             jdbc-url: jdbc:sqlserver://localhost;databaseName=batch-test;
-            username: <username>
-            password: <password>
+            username: sa
+            password: SE@knet8385
     batch:
         job:
             enabled: false
