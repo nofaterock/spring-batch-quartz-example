@@ -6,7 +6,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-12
  */
 @Slf4j

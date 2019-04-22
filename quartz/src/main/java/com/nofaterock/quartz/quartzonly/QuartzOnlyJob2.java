@@ -5,7 +5,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-02
  */
 @Slf4j

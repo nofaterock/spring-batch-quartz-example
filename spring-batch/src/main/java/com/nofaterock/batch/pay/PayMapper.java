@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-12
  */
 @Mapper

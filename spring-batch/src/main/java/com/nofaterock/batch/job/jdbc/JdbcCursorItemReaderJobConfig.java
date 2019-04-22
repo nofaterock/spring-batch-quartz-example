@@ -19,7 +19,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import javax.sql.DataSource;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-11
  */
 @Slf4j

@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Random;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-03
  */
 @Slf4j

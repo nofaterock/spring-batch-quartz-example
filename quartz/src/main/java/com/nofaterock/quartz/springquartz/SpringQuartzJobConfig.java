@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-12
  */
 @RequiredArgsConstructor

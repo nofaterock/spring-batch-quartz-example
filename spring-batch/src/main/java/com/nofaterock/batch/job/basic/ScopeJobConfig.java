@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-03
  */
 @Slf4j

@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-11
  */
 @Slf4j

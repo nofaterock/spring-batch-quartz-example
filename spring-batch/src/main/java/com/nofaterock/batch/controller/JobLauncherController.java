@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-03
  */
 @Slf4j

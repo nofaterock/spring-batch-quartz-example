@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-11
  */
 @ToString

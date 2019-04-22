@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-02
  */
 @Component

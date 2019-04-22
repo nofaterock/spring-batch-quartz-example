@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-03
  */
 @Slf4j

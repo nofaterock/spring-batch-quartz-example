@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
- * @author nofaterock
+ * @author 한승룡
  * @since 2019-04-15
  */
 @Configuration
