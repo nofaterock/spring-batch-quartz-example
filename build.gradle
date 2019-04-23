@@ -5,10 +5,6 @@ plugins {
 group = 'com.nofaterock.scheduler'
 version = '0.0.1-SNAPSHOT'
 
-ext {
-	set('springCloudVersion', 'Greenwich.SR1')
-}
-
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'idea'
@@ -25,12 +21,6 @@ subprojects {
 
 	repositories {
 		mavenCentral()
-	}
-
-	dependencyManagement {
-		imports {
-			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-		}
 	}
 
 	idea {
