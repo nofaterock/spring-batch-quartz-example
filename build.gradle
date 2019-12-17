@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.3.RELEASE'
 }
 
-group = 'com.nofaterock.scheduler'
+group = 'com.nofaterock.batch'
 version = '0.0.1-SNAPSHOT'
 
 subprojects {
