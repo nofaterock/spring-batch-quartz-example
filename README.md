@@ -1,8 +1,8 @@
 # Spring Batch Quartz Example 
 
 - Java 1.8.0_202
-- Gradle 5.2.1
-- Spring Boot 2.1.3
+- Gradle 6.0.1
+- Spring Boot 2.2.2
 - Spring Batch
 - Spring Quartz
 
