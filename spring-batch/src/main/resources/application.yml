@@ -13,8 +13,6 @@ spring:
     batch:
         job:
             names: ${job.name:NONE}
-    jpa:
-        open-in-view: false
 mybatis:
     mapper-locations: classpath*:mybatis/mapper/*Mapper.xml
 server:
