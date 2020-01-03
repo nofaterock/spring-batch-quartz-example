@@ -11,6 +11,7 @@ public class BatchWithQuartzApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 }

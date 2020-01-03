@@ -3,8 +3,16 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
+apply plugin: "idea"
+
 group = 'com.nofaterock.batch'
 version = '0.0.1-SNAPSHOT'
+
+idea {
+	module {
+		excludeDirs = [file(".idea"), file(".gradle"), file(".file")]
+	}
+}
 
 subprojects {
 	apply plugin: 'java'
@@ -17,13 +25,6 @@ subprojects {
 	configurations {
 		compileOnly {
 			extendsFrom annotationProcessor
-		}
-	}
-
-	idea {
-		module {
-			outputDir = file("${buildDir}/classes/main")
-			testOutputDir = file("${buildDir}/classes/test")
 		}
 	}
 
@@ -44,5 +45,12 @@ subprojects {
 
 	test {
 		useJUnitPlatform()
+	}
+
+	idea {
+		module {
+			outputDir = file("${buildDir}/classes/main")
+			testOutputDir = file("${buildDir}/classes/test")
+		}
 	}
 }
