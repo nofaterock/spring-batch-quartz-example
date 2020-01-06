@@ -3,7 +3,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1'
-	implementation 'com.microsoft.sqlserver:mssql-jdbc:8.1.1.jre8'
+	implementation 'com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8'
 
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation('org.springframework.batch:spring-batch-test') {
